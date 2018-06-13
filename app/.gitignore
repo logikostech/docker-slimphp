@@ -1,0 +1,21 @@
+# IDE
+.idea/
+.project
+
+# cache
+/cache/
+
+# logs
+logs/
+*.log
+error_log
+nohup.out
+
+# composer
+/vendor/
+composer.phar
+
+# Project
+phpunit.phar
+coveralls.phar
+/build/
