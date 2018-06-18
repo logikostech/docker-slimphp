@@ -19,3 +19,5 @@ composer.phar
 phpunit.phar
 coveralls.phar
 /build/
+
+.env
