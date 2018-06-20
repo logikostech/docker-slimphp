@@ -20,12 +20,14 @@
   },
   "autoload": {
     "psr-4": {
-      "Logikos\\": "src/"
+      "Logikos\\": "src/",
+      "Logikos\\Slim\\Module\\User\\": "modules/user/src"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "LogikosTest\\": "tests/"
+      "LogikosTest\\": "tests/",
+      "LogikosTest\\Slim\\Module\\User\\": "modules/user/src"
     }
   },
   "scripts": {

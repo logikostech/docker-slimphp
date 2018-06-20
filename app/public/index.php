@@ -8,6 +8,8 @@ lt_init_composer();
 lt_dotenv($configDir);
 $app = new \Slim\App();
 lt_routes($app);
+$userModule = new \Logikos\Slim\Module\User\Module();
+$userModule->defineRoutes($app);
 $app->run();
 
 function lt_init_debug() {
