@@ -6,7 +6,7 @@ lt_init_debug();
 lt_ci_server_check();
 lt_init_composer();
 lt_dotenv($configDir);
-$app = new \Slim\App();
+$app = new \Logikos\Slim\LtApp();
 lt_routes($app);
 $userModule = new \Logikos\Slim\Module\User\Module();
 $userModule->defineRoutes($app);
