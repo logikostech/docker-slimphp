@@ -1,28 +1,33 @@
 <?php
 namespace LogikosTest\Slim\Module\User;
 
-use Exception;
-use InvalidArgumentException;
 use Logikos\Slim\App;
-use Logikos\Slim\AppInterface;
 use Logikos\Slim\Module\User\Module;
 use PHPUnit\Framework\TestCase;
-use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Slim\Exception\MethodNotAllowedException;
-use Slim\Exception\NotFoundException;
 use Slim\Interfaces\RouteInterface;
-use Slim\Route;
-use Slim\UriInterface;
 
 class ModuleTest extends TestCase {
+  /** @var  RouteInterface */
+  private $mockRoute;
+  /** @var  App */
+  private $mockApp;
+
   public function testDefineRoutes() {
     $mod = new Module();
+    $app = $this->appSpy();
+    $mod->defineRoutes($app);
+    $this->assertTrue(count($app->routes) >= 1);
+  }
+
+  public function testVersion() {
+    $mod = new Module();
+    $this->assertNotEmpty($mod->version());
   }
 
   private function appSpy() {
-    $app = new class implements AppInterface {
+    $app = $this->mockApp ?: $this->mockApp = new class implements App {
       /** @var  RouteInterface */
       public $routeInterface;
 
@@ -31,7 +36,7 @@ class ModuleTest extends TestCase {
 
       public function group  ($pattern, $callable) {
         $this->_appendRoute($pattern);
-        $this->groupPattern = $pattern;
+        if (!$this->groupPattern) $this->groupPattern = $pattern;
       }
       public function get    ($pattern, $callable) { return $this->map(['get'],    $pattern, $callable); }
       public function post   ($pattern, $callable) { return $this->map(['post'],   $pattern, $callable); }
@@ -60,12 +65,12 @@ class ModuleTest extends TestCase {
           ResponseInterface $response = null
       ) {}
     };
-    $app->routeInterface = $this->mockRouteInterface();
+    $app->routeInterface = $this->routeMock();
     return $app;
   }
 
-  private function mockRouteInterface() {
-    return new class implements RouteInterface {
+  private function routeMock() {
+    return $this->mockRoute ?: $this->mockRoute = new class implements RouteInterface {
       public function getArgument($name, $default = null) {}
       public function getArguments() {}
       public function getName() {}
